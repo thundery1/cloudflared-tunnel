@@ -1,0 +1,20 @@
+name: Deploy Cloudflare Tunnel
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Cloudflared
+        run: |
+          wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared-linux-amd64.deb
+          nohup cloudflared tunnel run --token cloudflared.exe service install eyJhIjoiNmIyMTEyMDdjZDJjZTQzOGFkMzk5NGRlYjFlNDZmZjciLCJ0IjoiMmYwZTJmOGQtMjgwMS00MGM4LTgyODctMzY4YjY2YTZjODIxIiwicyI6IllqQXlNRGMyTUdRdE9UZzBNeTAwWmpreUxUa3pNVFl0T1RaaE9URXpZMlppTURneiJ9 &
+        shell: bash
