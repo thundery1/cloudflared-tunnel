@@ -1,0 +1,3 @@
+FROM cloudflare/cloudflared:latest
+ENV TUNNEL_TOKEN=cloudflared.exe service install eyJhIjoiNmIyMTEyMDdjZDJjZTQzOGFkMzk5NGRlYjFlNDZmZjciLCJ0IjoiMmYwZTJmOGQtMjgwMS00MGM4LTgyODctMzY4YjY2YTZjODIxIiwicyI6Ik9EY3dORFkxTURZdE1UWXhOaTAwTXpNeExUbGxaREV0TW1Gak1qTmxOVFJqTTJSbCJ9
+CMD ["tunnel", "run", "--token", "$TUNNEL_TOKEN"]
