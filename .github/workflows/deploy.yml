@@ -4,6 +4,8 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * *'  # 每5分钟检查一次，掉线自动重连
 
 jobs:
   deploy:
@@ -16,5 +18,10 @@ jobs:
         run: |
           wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
           sudo dpkg -i cloudflared-linux-amd64.deb
-          nohup cloudflared tunnel run --token cloudflared.exe service install eyJhIjoiNmIyMTEyMDdjZDJjZTQzOGFkMzk5NGRlYjFlNDZmZjciLCJ0IjoiMmYwZTJmOGQtMjgwMS00MGM4LTgyODctMzY4YjY2YTZjODIxIiwicyI6IllqQXlNRGMyTUdRdE9UZzBNeTAwWmpreUxUa3pNVFl0T1RaaE9URXpZMlppTURneiJ9 &
+          # 无限循环，保持隧道在线
+          while true; do
+            cloudflared tunnel run --token cloudflared.exe service install eyJhIjoiNmIyMTEyMDdjZDJjZTQzOGFkMzk5NGRlYjFlNDZmZjciLCJ0IjoiMmYwZTJmOGQtMjgwMS00MGM4LTgyODctMzY4YjY2YTZjODIxIiwicyI6Ik1EZ3dPR0ptWVRFdFpEVXhZUzAwWXpVM0xUbG1ORFV0T1dRNU1qa3hOV0l5T0dRMSJ9
+            sleep 5
+          done
         shell: bash
+        timeout-minutes: 0  # 永不超时
